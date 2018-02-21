@@ -109,6 +109,6 @@ class Command(object):
 
     # SCORE LOGIC
     def score_response(self):
-        response = "Here is my record..\nWins: {}\nLosses: {}\nDraws: {}".format(score_wins, score_losses, score_draws)
+        response = "Here is your record..\nWins: {}\nLosses: {}\nDraws: {}".format(score_wins, score_losses, score_draws)
 
         return response
