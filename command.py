@@ -1,31 +1,6 @@
 from random import randint
 
-score_wins = 0
-score_losses = 0
-score_draws = 0
-
-
 user_scores = []
-
-# user_scores = [
-#   {
-#     'user': 'U9D7A90VD', 
-#     'score_wins': 20, 
-#     'score_losses': 10,
-#     'score_draws': 0
-#   },{
-#     'user': 'ASHMAN', 
-#     'score_wins': 6, 
-#     'score_losses': 6,
-#     'score_draws': 5
-#   },{
-#     'user': 'DOBOCHO', 
-#     'score_wins': 12320, 
-#     'score_losses': 1233330,
-#     'score_draws': 4410
-#   }
-# ]
-
 
 class Command(object):
     def __init__(self):
@@ -125,7 +100,7 @@ class Command(object):
     def score_logic(self, verdict, user):
         global user_scores
         user_index = None
-        
+
         # USER INDEX LOOKUP LOOP
         for i in range(len(user_scores)):
             if(user == user_scores[i]['user']):
@@ -148,7 +123,6 @@ class Command(object):
             user_scores[user_index]['score_losses'] += 1
         else:
             user_scores[user_index]['score_draws'] += 1
-
 
 
     def score_response(self, user):

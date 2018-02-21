@@ -1,3 +1,4 @@
+import os
 import time
 import event
 from slackclient import SlackClient
@@ -5,7 +6,7 @@ from slackclient import SlackClient
 
 class Bot(object):
     def __init__(self):
-        self.slack_client = SlackClient('xoxb-318097385459-zsgv87LHTvQwRg5HB1n2Xluf')
+        self.slack_client = SlackClient(os.environ.get("SLACK_API"))
         self.bot_name = 'ashco_proj-bot'
         self.bot_id = self.get_bot_id()
 
