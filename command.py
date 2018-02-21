@@ -1,11 +1,16 @@
 from random import randint
 
+score_wins = 0
+score_losses = 0
+score_draws = 0
+
 class Command(object):
     def __init__(self):
         self.commands = {
-            "rock" : self.rock,
-            "paper" : self.paper,
-            "scissors" : self.scissors,
+            "rock" : self.rock_response,
+            "paper" : self.paper_response,
+            "scissors" : self.scissors_response,
+            "score" : self.score_response,
         }
 
     def handle_command(self, user, command):
@@ -26,6 +31,7 @@ class Command(object):
              
         return response
 
+
     # LOGIC TO DETERMINE BOT CHOICE
     def bot_choice(self):
         randnum = randint(0, 2)
@@ -40,43 +46,69 @@ class Command(object):
         return (randnum, choice)
 
 
-    def rock(self):
+    def outcome_analyzer(self, choice, verdict):
+        if verdict == 'WIN':
+            end_string = 'You win.'
+            global score_wins
+            score_wins += 1
+        elif verdict == 'LOSE':
+            end_string = 'You lose!'
+            global score_losses
+            score_losses += 1
+        else:
+            end_string = 'It\'s a draw'
+            global score_draws
+            score_draws += 1
+
+        response_text = 'I choose {}. {}'.format(choice, end_string)
+
+        return response_text
+
+    def rock_response(self):
         randnum, choice = self.bot_choice()
 
         if randnum == 0:
-            verdict = 'It\'s a draw.'
+            verdict = 'DRAW'
         elif randnum == 1:
-            verdict = 'I win!'
+            verdict = 'LOSE'
         else:
-            verdict = 'I lose.'
+            verdict = 'WIN'
         
-        response = 'I choose {}. {}'.format(choice, verdict)
-        return response
+        return self.outcome_analyzer(choice, verdict)
 
 
-    def paper(self):
+    def paper_response(self):
         randnum, choice = self.bot_choice()
 
         if randnum == 0:
-            verdict = 'I lose.'
+            verdict = 'WIN'
         elif randnum == 1:
-            verdict = 'It\'s a draw.'
+            verdict = 'DRAW'
         else:
-            verdict = 'I win!'
+            verdict = 'LOSE'
         
-        response = 'I choose {}. {}'.format(choice, verdict)
-        return response
+        return self.outcome_analyzer(choice, verdict)
 
 
-    def scissors(self):
+    def scissors_response(self):
         randnum, choice = self.bot_choice()
 
         if randnum == 0:
-            verdict = 'I win!'
+            verdict = 'LOSE'
         elif randnum == 1:
-            verdict = 'I lose.'
+            verdict = 'WIN'
         else:
-            verdict = 'It\'s a draw.'
+            verdict = 'DRAW'
         
-        response = 'I choose {}. {}'.format(choice, verdict)
+        return self.outcome_analyzer(choice, verdict)
+
+
+
+    # SET UP NEW CONSOLIDATE ROCK PAPER SCISSORS FUNCTION
+
+
+    # SCORE LOGIC
+    def score_response(self):
+        response = "Here is my record..\nWins: {}\nLosses: {}\nDraws: {}".format(score_wins, score_losses, score_draws)
+
         return response
