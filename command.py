@@ -1,8 +1,33 @@
 from random import randint
 
+user_scores = []
+
 score_wins = 0
 score_losses = 0
 score_draws = 0
+
+
+user_score_dict = [
+  {
+    'user': 'U9D7A90VD', 
+    'score_wins': 0, 
+    'score_losses': 0,
+    'score_draws': 0
+  },{
+    'user': 'ASHMAN', 
+    'score_wins': 6, 
+    'score_losses': 6,
+    'score_draws': 5
+  },{
+    'user': 'DOBOCHO', 
+    'score_wins': 12320, 
+    'score_losses': 1233330,
+    'score_draws': 4410
+  }
+]
+
+
+
 
 class Command(object):
     def __init__(self):
@@ -17,7 +42,7 @@ class Command(object):
         response = "<@" + user + ">: "
      
         if command in self.commands:
-            response += self.commands[command]()
+            response += self.commands[command](user)
         else:
             response += "Sorry I don't understand the command: " + command + ". " + self.help()
          
@@ -30,6 +55,48 @@ class Command(object):
             response += command + "\r\n"
              
         return response
+
+
+
+
+
+    def rock_response(self, user):
+        randnum, choice = self.bot_choice()
+
+        if randnum == 0:
+            verdict = 'DRAW'
+        elif randnum == 1:
+            verdict = 'LOSE'
+        else:
+            verdict = 'WIN'
+        
+        return self.verdict_analyzer(choice, verdict, user)
+
+
+    def paper_response(self, user):
+        randnum, choice = self.bot_choice()
+
+        if randnum == 0:
+            verdict = 'WIN'
+        elif randnum == 1:
+            verdict = 'DRAW'
+        else:
+            verdict = 'LOSE'
+        
+        return self.verdict_analyzer(choice, verdict, user)
+
+
+    def scissors_response(self, user):
+        randnum, choice = self.bot_choice()
+
+        if randnum == 0:
+            verdict = 'LOSE'
+        elif randnum == 1:
+            verdict = 'WIN'
+        else:
+            verdict = 'DRAW'
+        
+        return self.verdict_analyzer(choice, verdict, user)
 
 
     # LOGIC TO DETERMINE BOT CHOICE
@@ -45,62 +112,39 @@ class Command(object):
 
         return (randnum, choice)
 
-
-    def outcome_analyzer(self, choice, verdict):
+    def verdict_analyzer(self, choice, verdict, user):
         if verdict == 'WIN':
             end_string = 'You win.'
-            global score_wins
-            score_wins += 1
+            # global score_wins
+            # score_wins += 1
         elif verdict == 'LOSE':
             end_string = 'You lose!'
-            global score_losses
-            score_losses += 1
+            # global score_losses
+            # score_losses += 1
         else:
             end_string = 'It\'s a draw'
-            global score_draws
-            score_draws += 1
+            # global score_draws
+            # score_draws += 1
+
+        self.score_logic(verdict, user)
 
         response_text = 'I choose {}. {}'.format(choice, end_string)
 
         return response_text
 
-    def rock_response(self):
-        randnum, choice = self.bot_choice()
+    def score_logic(self, user):
+        global user_score_dict
 
-        if randnum == 0:
-            verdict = 'DRAW'
-        elif randnum == 1:
-            verdict = 'LOSE'
+        if verdict == 'WIN':
+            user_score_dict[]
+            score_wins += 1
+        elif verdict == 'LOSE':
+            score_losses += 1
         else:
-            verdict = 'WIN'
-        
-        return self.outcome_analyzer(choice, verdict)
+            score_draws += 1
 
 
-    def paper_response(self):
-        randnum, choice = self.bot_choice()
-
-        if randnum == 0:
-            verdict = 'WIN'
-        elif randnum == 1:
-            verdict = 'DRAW'
-        else:
-            verdict = 'LOSE'
-        
-        return self.outcome_analyzer(choice, verdict)
-
-
-    def scissors_response(self):
-        randnum, choice = self.bot_choice()
-
-        if randnum == 0:
-            verdict = 'LOSE'
-        elif randnum == 1:
-            verdict = 'WIN'
-        else:
-            verdict = 'DRAW'
-        
-        return self.outcome_analyzer(choice, verdict)
+        print('Score logic triggered, user is: ', user)
 
 
 
@@ -108,7 +152,8 @@ class Command(object):
 
 
     # SCORE LOGIC
-    def score_response(self):
+    def score_response(self, user):
         response = "Here is your record..\nWins: {}\nLosses: {}\nDraws: {}".format(score_wins, score_losses, score_draws)
+
 
         return response
