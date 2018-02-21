@@ -5,24 +5,26 @@ score_losses = 0
 score_draws = 0
 
 
-user_scores = [
-  {
-    'user': 'U9D7A90VD', 
-    'score_wins': 20, 
-    'score_losses': 10,
-    'score_draws': 0
-  },{
-    'user': 'ASHMAN', 
-    'score_wins': 6, 
-    'score_losses': 6,
-    'score_draws': 5
-  },{
-    'user': 'DOBOCHO', 
-    'score_wins': 12320, 
-    'score_losses': 1233330,
-    'score_draws': 4410
-  }
-]
+user_scores = []
+
+# user_scores = [
+#   {
+#     'user': 'U9D7A90VD', 
+#     'score_wins': 20, 
+#     'score_losses': 10,
+#     'score_draws': 0
+#   },{
+#     'user': 'ASHMAN', 
+#     'score_wins': 6, 
+#     'score_losses': 6,
+#     'score_draws': 5
+#   },{
+#     'user': 'DOBOCHO', 
+#     'score_wins': 12320, 
+#     'score_losses': 1233330,
+#     'score_draws': 4410
+#   }
+# ]
 
 
 class Command(object):
@@ -66,7 +68,6 @@ class Command(object):
         
         return self.verdict_analyzer(choice, verdict, user)
 
-
     def paper_response(self, user):
         randnum, choice = self.bot_choice()
 
@@ -78,7 +79,6 @@ class Command(object):
             verdict = 'LOSE'
         
         return self.verdict_analyzer(choice, verdict, user)
-
 
     def scissors_response(self, user):
         randnum, choice = self.bot_choice()
@@ -109,16 +109,10 @@ class Command(object):
     def verdict_analyzer(self, choice, verdict, user):
         if verdict == 'WIN':
             end_string = 'You win.'
-            # global score_wins
-            # score_wins += 1
         elif verdict == 'LOSE':
             end_string = 'You lose!'
-            # global score_losses
-            # score_losses += 1
         else:
             end_string = 'It\'s a draw'
-            # global score_draws
-            # score_draws += 1
 
         self.score_logic(verdict, user)
 
@@ -131,31 +125,34 @@ class Command(object):
     def score_logic(self, verdict, user):
         global user_scores
         user_index = None
-
+        
+        # USER INDEX LOOKUP LOOP
         for i in range(len(user_scores)):
             if(user == user_scores[i]['user']):
                 user_index = i
+        
+        # CREATE NEW USER SCOREBOARD ENTRY
+        if user_index is None:
+            user_scores.append({
+                'user': user, 
+                'score_wins': 0, 
+                'score_losses': 0,
+                'score_draws': 0,
+            })
+            user_index = len(user_scores)-1
 
+        # SCOREBOARD ITERATOR LOGIC
         if verdict == 'WIN':
-            # user_score_dict[]
             user_scores[user_index]['score_wins'] += 1
-            # print('current wins: ', user_scores[user_index]['score_wins'])
-            # score_wins += 1
         elif verdict == 'LOSE':
-            # score_losses += 1
             user_scores[user_index]['score_losses'] += 1
-            # print('current losses: ', user_scores[user_index]['score_losses'])
         else:
-            # score_draws += 1
             user_scores[user_index]['score_draws'] += 1
-            # print('current draws: ', user_scores[user_index]['score_draws'])
 
-        # print('Score logic triggered, user is: ', user)
 
 
     def score_response(self, user):
-        user_index = None
-
+        # USER INDEX LOOKUP LOOP
         for i in range(len(user_scores)):
             if(user == user_scores[i]['user']):
                 user_index = i
@@ -163,18 +160,6 @@ class Command(object):
         response = "Here is your record..\nWins: {}\nLosses: {}\nDraws: {}".format(user_scores[user_index]['score_wins'], user_scores[user_index]['score_losses'], user_scores[user_index]['score_draws'])
 
         return response
-
-
-# # Returns index of user's score object
-# def find_user(user_name):
-#   for i in range(len(user_scores)):
-#     if(user_name == user_scores[i]['user']):
-#       return i
-
-# user_index = find_user('ASHMAN')
-
-# print(user_scores[user_index]['score_wins'])
-
 
 
 
