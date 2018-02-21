@@ -1,17 +1,15 @@
 from random import randint
 
-user_scores = []
-
 score_wins = 0
 score_losses = 0
 score_draws = 0
 
 
-user_score_dict = [
+user_scores = [
   {
     'user': 'U9D7A90VD', 
-    'score_wins': 0, 
-    'score_losses': 0,
+    'score_wins': 20, 
+    'score_losses': 10,
     'score_draws': 0
   },{
     'user': 'ASHMAN', 
@@ -25,8 +23,6 @@ user_score_dict = [
     'score_draws': 4410
   }
 ]
-
-
 
 
 class Command(object):
@@ -48,6 +44,7 @@ class Command(object):
          
         return response
      
+
     def help(self):
         response = "I am a contraption created to kick your ass at Rock, Paper, Scissors. \nPlease enter one of the following commands:\r\n"
          
@@ -55,9 +52,6 @@ class Command(object):
             response += command + "\r\n"
              
         return response
-
-
-
 
 
     def rock_response(self, user):
@@ -132,28 +126,62 @@ class Command(object):
 
         return response_text
 
-    def score_logic(self, user):
-        global user_score_dict
+
+   # SCORE LOGIC
+    def score_logic(self, verdict, user):
+        global user_scores
+        user_index = None
+
+        for i in range(len(user_scores)):
+            if(user == user_scores[i]['user']):
+                user_index = i
 
         if verdict == 'WIN':
-            user_score_dict[]
-            score_wins += 1
+            # user_score_dict[]
+            user_scores[user_index]['score_wins'] += 1
+            # print('current wins: ', user_scores[user_index]['score_wins'])
+            # score_wins += 1
         elif verdict == 'LOSE':
-            score_losses += 1
+            # score_losses += 1
+            user_scores[user_index]['score_losses'] += 1
+            # print('current losses: ', user_scores[user_index]['score_losses'])
         else:
-            score_draws += 1
+            # score_draws += 1
+            user_scores[user_index]['score_draws'] += 1
+            # print('current draws: ', user_scores[user_index]['score_draws'])
+
+        # print('Score logic triggered, user is: ', user)
 
 
-        print('Score logic triggered, user is: ', user)
+    def score_response(self, user):
+        user_index = None
+
+        for i in range(len(user_scores)):
+            if(user == user_scores[i]['user']):
+                user_index = i
+
+        response = "Here is your record..\nWins: {}\nLosses: {}\nDraws: {}".format(user_scores[user_index]['score_wins'], user_scores[user_index]['score_losses'], user_scores[user_index]['score_draws'])
+
+        return response
+
+
+# # Returns index of user's score object
+# def find_user(user_name):
+#   for i in range(len(user_scores)):
+#     if(user_name == user_scores[i]['user']):
+#       return i
+
+# user_index = find_user('ASHMAN')
+
+# print(user_scores[user_index]['score_wins'])
+
+
+
+
 
 
 
     # SET UP NEW CONSOLIDATE ROCK PAPER SCISSORS FUNCTION
 
 
-    # SCORE LOGIC
-    def score_response(self, user):
-        response = "Here is your record..\nWins: {}\nLosses: {}\nDraws: {}".format(score_wins, score_losses, score_draws)
-
-
-        return response
+ 
